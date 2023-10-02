@@ -1,1 +1,91 @@
-{}
+{
+	"Nakama Remote Procedure Call" : { 
+	"prefix": "rpc", 
+	"body": [  
+	  "func Rpc${1:XXX}(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, payload string) (string, error) {",
+	  "	$0",      
+	  "}"
+	],      
+	"description": "Remote Procedure Calls (RPCs) let you call functions registered in your runtime code to operate on messages received from clients or execute custom logic on demand, for example a profanity filter for chat messages."
+   },
+
+   "Nakama Match Init" : { 
+   "prefix": ["matchinit","minit"], 
+   "body": [  
+	 "func (${1:m} *${2:MatchHandler}) MatchInit(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, params map[string]interface{}) (interface{}, int, string) {",
+	 "	state := &${3:MatchState}{}"
+	 "	tickRate := ${4:1}"
+	 "	label := \"$5\""
+	 "	$0"
+	 "	return state, tickRate, label"
+	 "}"
+   ],      
+   "description": "Invoked when a match is created as a result of the match create function and sets up the initial state of a match. This will be called once at match start."
+  },
+
+  "Nakama Match Join" : { 
+  "prefix": ["matchjoin","mjoin"], 
+  "body": [  
+	"func (${1:m} *${2:MatchHandler}) MatchJoin(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, dispatcher runtime.MatchDispatcher, tick int64, state interface{}, presences []runtime.Presence) interface{} {",
+	"	$0"
+	"	return state"
+	"}"
+  ],      
+  "description": "Executed when one or more users have successfully completed the match join process after their MatchJoinAttempt() returns true. When their presences are sent to this function the users are ready to receive match data messages and can be targets for the dispatcher's BroadcastMessage() function."
+ },
+
+ "Nakama Match Join Attempt" : { 
+	"prefix": ["matchjoinattempt","mjoinattempt"], 
+	"body": [  
+	  "func (${1:m} *${2:MatchHandler}) MatchJoinAttempt(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, dispatcher runtime.MatchDispatcher, tick int64, state interface{}, presence runtime.Presence, metadata map[string]string) (interface{}, bool, string) {",
+	  "	$0"
+	  "	return state, result, \"\""
+	  "}"
+	],      
+	"description": "Executed when a user attempts to join the match using the client's match join operation. This includes any re-join request from a client after a lost connection is resumed, where client will need to explicitly re-join upon reconnection. Match join attempt can be used to prevent more players from joining after a match has started or disallow the user for any other game specific reason."
+   },
+
+   "Nakama Match Leave" : { 
+	"prefix": ["matchleave","mleave"], 
+	"body": [  
+	  "func (${1:m} *${2:MatchHandler}) MatchLeave(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, dispatcher runtime.MatchDispatcher, tick int64, state interface{}, presences []runtime.Presence) interface{} {",
+	  "	$0"
+	  "	return state"
+	  "}"
+	],      
+	"description": "Executed when one or more users have left the match for any reason including connection loss."
+   },
+
+   "Nakama Match Loop" : { 
+	"prefix": ["matchloop","mloop"], 
+	"body": [  
+	  "func (${1:m} *${2:MatchHandler}) MatchLoop(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, dispatcher runtime.MatchDispatcher, tick int64, state interface{}, messages []runtime.MatchData) interface{} {",
+	  "	$0"
+	  "	return state"
+	  "}"
+	],      
+	"description": "Called when the match handler receives a runtime signal. Match signals allow the match handler to be sent a reservation signal to mark a user ID or session ID into the match state ahead of their join attempt and eventual join flow. This is useful to apply reservations to a matchmaking system with Nakama's matchmaker or match listings APIs."
+   },
+
+   "Nakama Match Signal" : { 
+	"prefix": ["matchsignal","msignal"], 
+	"body": [  
+	  "func (${1:m} *${2:MatchHandler}) MatchSignal(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, dispatcher runtime.MatchDispatcher, tick int64, state interface{}, data string) (interface{}, string) {",
+	  "	$0"
+	  "	return state, \"\""
+	  "}"
+	],      
+	"description": "Executed on an interval based on the tick rate returned by MatchInit(). Each tick the match loop is run which can process messages received from clients and apply changes to the match state before the next tick. It can also dispatch messages to one or more connected match participants. To send messages back to the participants in the match you can keep track of them in the game state and use the dispatcher object to send messages to subsets of the users or all of them."
+   },
+
+   "Nakama Match Terminate" : { 
+	"prefix": ["matchterminate","mterminate"], 
+	"body": [  
+	  "func (${1:m} *${2:MatchHandler}) MatchTerminate(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, dispatcher runtime.MatchDispatcher, tick int64, state interface{}, graceSeconds int) interface{} {",
+	  "	$0"
+	  "	return state"
+	  "}"
+	],      
+	"description": "Called when the server begins a graceful shutdown process. Will not be called if graceful shutdown is disabled. The match should attempt to complete any processing before the given number of seconds elapses, and optionally send a message to clients to inform them the server is shutting down. When the grace period expires the match will be forcefully closed if it is still running, clients will be disconnected, and the server will shut down."
+   },
+}

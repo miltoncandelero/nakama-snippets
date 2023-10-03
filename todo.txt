@@ -1,0 +1,24 @@
+Todo: Add snippets for these functs
+
+RegisterEvent(fn func(ctx context.Context, logger runtime.Logger, evt *api.Event))
+RegisterEventSessionStart(fn func(ctx context.Context, logger runtime.Logger, evt *api.Event))
+RegisterEventSessionEnd(fn func(ctx context.Context, logger runtime.Logger, evt *api.Event))
+
+RegisterMatch(name string, fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule) (runtime.Match, error))
+
+RegisterMatchmakerMatched(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, entries []runtime.MatchmakerEntry) (string, error))
+RegisterMatchmakerOverride(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, matches [][]runtime.MatchmakerEntry) [][]runtime.MatchmakerEntry)
+
+RegisterTournamentEnd(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, tournament *api.Tournament, end, reset int64) error)
+RegisterTournamentReset(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, tournament *api.Tournament, end, reset int64) error)
+
+RegisterLeaderboardReset(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, leaderboard *api.Leaderboard, reset int64) error)
+
+RegisterPurchaseNotificationApple(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, purchase *api.ValidatedPurchase, providerPayload string) error)
+RegisterPurchaseNotificationGoogle(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, purchase *api.ValidatedPurchase, providerPayload string) error)
+
+RegisterSubscriptionNotificationApple(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, subscription *api.ValidatedSubscription, providerPayload string) error)
+RegisterSubscriptionNotificationGoogle(fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, subscription *api.ValidatedSubscription, providerPayload string) error)
+
+RegisterStorageIndex(name, collection, key string, fields []string, maxEntries int)
+RegisterStorageIndexFilter(indexName string, fn func(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, write *runtime.StorageWrite) bool)

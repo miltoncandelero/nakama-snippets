@@ -1,8 +1,21 @@
 {
   "name": "nakama-snippets",
   "displayName": "Nakama Snippets",
-  "description": "Snippets for nakama go server runtime",
+  "description": "Snippets for Nakama go Server Runtime",
+  "license":"MIT",
+  "author": {
+    "name": "Milton Candelero"
+  },
+  "galleryBanner": {
+    "color": "#5a50c3",
+    "theme": "light"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miltoncandelero/nakama-snippets.git"
+  },
   "version": "0.0.1",
+  "icon": "./logo.png",
   "engines": {
     "vscode": "^1.82.0"
   },
